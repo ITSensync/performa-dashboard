@@ -26,7 +26,7 @@ const AppContent: React.FC = () => {
     { id: "sparing08", title: "Papyrus" },
     { id: "sparing09", title: "BCP" },
     { id: "sparing10", title: "Pangjaya" },
-    { id: "sparing11", title: "LPA" },
+    // { id: "sparing11", title: "LPA" },
     { id: "sparing12", title: "Kertas PDL"},
     { id: "sparing13", title: "SSM"},
     // { id: "weaving01", title: "weaving01" },
