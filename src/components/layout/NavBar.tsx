@@ -7,6 +7,7 @@ import ThemeToggle from '../ThemeToggle';
 const navigation = [
   { name: 'DATA 2 MENIT', href: '/per2mnt', current: false },
   { name: 'DATA PERJAM', href: '/perjam', current: false },
+  { name: 'VALIDITAS DATA', href: '/validitas', current: false },
 ];
 
 function classNames(...classes: string[]) {

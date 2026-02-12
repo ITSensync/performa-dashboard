@@ -5,6 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import DaftarChartValidity from "./components/validitas/DaftarChartValidity";
 import DaftarChart from "./components/per2mnt/DaftarChart";
 import ThemeToggle from "./components/ThemeToggle";
 import CardComponents from "./components/per2mnt/CardComponents";
@@ -75,6 +76,15 @@ const AppContent: React.FC = () => {
               <>
                 <CardHoursComponents />
                 <DaftarChartHours data={dataPerJam} /> {/* Pass only data prop */}
+              </>
+            }
+          />
+          <Route
+            path="/validitas"
+            element={
+              <>
+                {/* <CardHoursComponents /> */}
+                <DaftarChartValidity data={dataPer2Mnt} /> {/* Pass only data prop */}
               </>
             }
           />
