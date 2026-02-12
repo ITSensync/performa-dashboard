@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ChartComponent from "./ChartValidityComponent";
 import axios from "axios";
 import { API_URL } from "../../api/config";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface DataItem {
   id: string;
@@ -37,6 +39,7 @@ const months = [
 ];
 
 const DaftarChart: React.FC<Props> = ({ data }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [sites, setSites] = useState<SiteItem[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<number>(
     new Date().getMonth() + 1,
@@ -76,9 +79,13 @@ const DaftarChart: React.FC<Props> = ({ data }) => {
   const currentMonthLabel = getMonthLabel(currentMonth);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${API_URL}/previous-month-validity/${currentMonth}/${currentYear}`)
-      .then((res) => setSites(res.data.data));
+      .then((res) => {
+        setSites(res.data.data);
+        setLoading(false);
+      });
   }, [currentMonth, currentYear]);
 
   return (
@@ -122,27 +129,35 @@ const DaftarChart: React.FC<Props> = ({ data }) => {
         </div>
       </div>
 
-      <div className=" flex flex-wrap grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {/* Lakukan pemetaan (mapping) pada array data dan render ChartComponent untuk setiap data */}
-        {data.map(({ id, title }) => {
-          const siteData = sites.find((s) => s.id === id);
+      {loading ? (
+        <div className="w-full flex justify-center">
+          <p className="text-4xl mt-4">
+            <FontAwesomeIcon icon={faSpinner} spin />
+          </p>
+        </div>
+      ) : (
+        <div className=" flex flex-wrap grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {/* Lakukan pemetaan (mapping) pada array data dan render ChartComponent untuk setiap data */}
+          {data.map(({ id, title }) => {
+            const siteData = sites.find((s) => s.id === id);
 
-          if (!siteData) return null;
+            if (!siteData) return null;
 
-          return (
-            <div
-              key={id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col justify-center items-center"
-            >
-              <h4 className="text-lg font-semibold mb-1 text-center">
-                {title}
-              </h4>
+            return (
+              <div
+                key={id}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col justify-center items-center"
+              >
+                <h4 className="text-lg font-semibold mb-1 text-center">
+                  {title}
+                </h4>
 
-              <ChartComponent site={siteData} />
-            </div>
-          );
-        })}
-      </div>
+                <ChartComponent site={siteData} />
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
