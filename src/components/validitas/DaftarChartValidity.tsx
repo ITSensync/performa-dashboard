@@ -139,18 +139,36 @@ const DaftarChart: React.FC<Props> = ({ data }) => {
         <div className=" flex flex-wrap grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {/* Lakukan pemetaan (mapping) pada array data dan render ChartComponent untuk setiap data */}
           {data.map(({ id, title }) => {
+            const nonTextile = ["Papyrus", "Kertas PDL"];
             const siteData = sites.find((s) => s.id === id);
 
             if (!siteData) return null;
+
+            let avePercent = 0;
+            if (nonTextile.includes(title)) {
+              avePercent =
+                (siteData.ph_percent +
+                  siteData.tss_percent +
+                  siteData.cod_percent) /
+                3;
+            } else {
+              avePercent =
+                (siteData.ph_percent +
+                  siteData.nh3n_percent +
+                  siteData.tss_percent +
+                  siteData.cod_percent) /
+                4;
+            }
 
             return (
               <div
                 key={id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col justify-center items-center"
               >
-                <h4 className="text-lg font-semibold mb-1 text-center">
+                <h4 className="text-lg font-semibold  text-center">
                   {title}
                 </h4>
+                <p className="text-xs italic mb-1 font-medium text-center">Rata-Rata Seluruh Parameter: {avePercent.toFixed(1)}%</p>
 
                 <ChartComponent site={siteData} />
               </div>
